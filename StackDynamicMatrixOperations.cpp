@@ -33,8 +33,8 @@ bool sizeCheck(matrix& matrixA, matrix& matrixB);
 //Main Function
 int main (int argc, char* argv[]){
 //Declerations
-int operation;
-bool isManualEntry;
+int operation = 0;
+bool isManualEntry = false;
 bool newOperation = true;
 bool newArray = true;
 matrix matrixA;
@@ -223,24 +223,6 @@ cout << "Enter values for Matrix B: " << endl;
         }
 displayOperands(matrixA, matrixB);
 }
-bool getEntryMethod(){
-bool isManual = false;
-int selection = 0;
-cout << "Select entry method: " << endl;
-cout << "0.File entry" << endl;
-cout << "1.Manual entry" << endl;
-cin >> selection;
-while (selection != 0 && selection != 1){
-    cout << "Invalid Selection" << endl;
-    cout << "-----------------" << endl;
-    cout << "Select entry method: " << endl;
-    cout << "0.File entry" << endl;
-    cout << "1.Manual entry" << endl;
-    cin >> selection;
-}
-    isManual = selection;
-    return isManual;
-}
 void displayOperands(matrix& matrixA, matrix& matrixB){
         cout << "Matrix A:" << endl;
     for (int i = 0; i < matrixA.rows; i++) {
@@ -258,26 +240,6 @@ void displayOperands(matrix& matrixA, matrix& matrixB){
     }
         cout << "------------------------------" << endl;
 }
-int  chooseOperation(){
-    int operationChoice;
-    cout << "Choose an operation to Perform" << endl;
-    cout << "------------------------------" << endl;
-    cout << "0. Quit" << endl;
-    cout << "1. Addition" << endl;
-    cout << "2. Subtraction" << endl;
-    cout << "3. Multiplication" << endl;
-    cin >> operationChoice;
-    while (operationChoice < 0 || operationChoice >= 4){
-        cout << "Invalid selection" << endl;
-        cout << "Choose an operation to Perform" << endl;
-        cout << "------------------------------" << endl;
-        cout << "1. Addition" << endl;
-        cout << "2. Subtraction" << endl;
-        cout << "3. Multiplication" << endl;
-        cin >> operationChoice;
-    }
-    return operationChoice;
-}
 void displayResults(matrix& matrixC){
     cout << "Matrix C: " << endl;
     for (int i = 0; i < matrixC.rows; i++){
@@ -286,6 +248,24 @@ void displayResults(matrix& matrixC){
         }
     cout << endl;
     }
+}
+bool getEntryMethod(){
+bool isManual = false;
+int selection = 0;
+cout << "Select entry method: " << endl;
+cout << "0.File entry" << endl;
+cout << "1.Manual entry" << endl;
+cin >> selection;
+while (selection != 0 && selection != 1){
+    cout << "Invalid Selection" << endl;
+    cout << "-----------------" << endl;
+    cout << "Select entry method: " << endl;
+    cout << "0.File entry" << endl;
+    cout << "1.Manual entry" << endl;
+    cin >> selection;
+}
+    isManual = selection;
+    return isManual;
 }
 bool tryNewArray(){
     int tryAgain;
@@ -341,4 +321,24 @@ bool sizeCheck(matrix& matrixA, matrix& matrixB){
     }
     else
     return 1;
+}
+int  chooseOperation(){
+    int operationChoice;
+    cout << "Choose an operation to Perform" << endl;
+    cout << "------------------------------" << endl;
+    cout << "0. Quit" << endl;
+    cout << "1. Addition" << endl;
+    cout << "2. Subtraction" << endl;
+    cout << "3. Multiplication" << endl;
+    cin >> operationChoice;
+    while (operationChoice < 0 || operationChoice >= 4){
+        cout << "Invalid selection" << endl;
+        cout << "Choose an operation to Perform" << endl;
+        cout << "------------------------------" << endl;
+        cout << "1. Addition" << endl;
+        cout << "2. Subtraction" << endl;
+        cout << "3. Multiplication" << endl;
+        cin >> operationChoice;
+    }
+    return operationChoice;
 }
