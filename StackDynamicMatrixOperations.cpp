@@ -179,9 +179,7 @@ void fileMatrixInitialization(matrix& matrixA, matrix& matrixB){
     displayOperands(matrixA, matrixB);
 }
 void manualMatrixInitialization(matrix& matrixA, matrix& matrixB){
-bool isManual = false;
 bool isValidSize = false;
-isManual = getEntryMethod();
 while (!isValidSize){
 cout << "------------------------------------------" << endl;
 cout << "Enter the dimensions of your first matrix " << endl;
