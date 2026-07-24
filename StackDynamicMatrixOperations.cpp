@@ -10,8 +10,8 @@ const int MAX_SIZE = 100;
 //Structures
 struct matrix {
     float data[MAX_SIZE][MAX_SIZE];
-    int rows;
-    int cols;
+    int rows = 0;
+    int cols = 0;
 };
 //End Structures
 
