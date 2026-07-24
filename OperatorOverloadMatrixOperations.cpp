@@ -9,8 +9,6 @@ void displayMenu();
 void displayResults();
 
 int main(int argc, char* argv[]) {
-    float matrixA[];
-
 
     return 0;
 }
