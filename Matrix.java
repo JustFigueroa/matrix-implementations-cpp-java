@@ -73,10 +73,53 @@ public void displayOperand(){
     }
 }
 
-private static Matrix manualMatrixGenerator(Scanner userVal, string matrixName){
+private static Matrix manualMatrixGenerator(Scanner userVal, String matrixName){
+    System.out.print (matrixName + " rows: ");
+    int rows = userVal.nextInt();
+    System.out.print (matrixName + " columns: ");
+    int cols = userVal.nextInt();
+    Matrix matrixM = new Matrix(rows, cols);
+    for (int i = 0; i < rows; i++){
+        for (int j = 0; j < cols; j++){
+            System.out.print(matrixName + "[" + i + "] [" + j + "]: ");
+            matrixM.setValue(i, j, userVal.nextFloat());
+        }
+    }
+    return matrixM;
+}
+private static Matrix[] fileMatrixInitialization(Scanner userFile) {
+    System.out.print("Enter path to file: ");
+    userFile.nextLine();
+    String pathToFile = userFile.nextLine();
+    try (Scanner fileInput = new Scanner(new File(pathToFile))) {
+        Matrix matrixA = fileMatrixGenerator(fileInput);
+        Matrix matrixB = fileMatrixGenerator(fileInput);
+        return new Matrix[] {matrixA, matrixB};
+    }
+    catch (FileNotFoundException error) {
+        throw new IllegalArgumentException("File could not be opened: " + pathToFile);
+    }
+}
+private static Matrix fileMatrixGenerator(Scanner fileInput){
+    int rows = fileInput.nextInt();
+    int cols = fileInput.nextInt();
+    Matrix matrixM = new Matrix(rows, cols);
+    for (int i = 0; i < rows; i++){
+        for (int j = 0; j < cols; j++){
+            matrixM.data[i][j] = fileInput.nextFloat();
+        }
+    }
+    return matrixM;
+}
 
-
-};
+private static int chooseOperation(Scanner userChoice){
+    System.out.println("0. Select new matrices");
+    System.out.println("1. Addition");
+    System.out.println("1. Subtraction");
+    System.out.println("2. Multiplication");
+    System.out.print("Selection: ");
+    return userChoice.nextInt();
+}
 
 
 }
