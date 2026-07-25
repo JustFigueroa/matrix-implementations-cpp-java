@@ -5,10 +5,6 @@
 #include <string>
 using namespace std;
 using namespace std;
-//Global Constants
-const int MAX_SIZE = 100;
-//End Global Constants
-
 //Structures
 struct matrix{
     float** data = nullptr;
