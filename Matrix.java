@@ -36,6 +36,7 @@ public Matrix add(Matrix matrixB){
     }
     return matrixC;
 }
+
 public Matrix sub(Matrix matrixB){
     if (rows != matrixB.rows || cols != matrixB.cols){
         throw new IllegalArgumentException("Incompatable array sizes");
@@ -88,6 +89,7 @@ private static Matrix manualMatrixGenerator(Scanner userVal, String matrixName){
     }
     return matrixM;
 }
+
 private static Matrix[] fileMatrixInitialization(Scanner userFile) {
     System.out.print("Enter path to file: ");
     userFile.nextLine();
@@ -101,6 +103,7 @@ private static Matrix[] fileMatrixInitialization(Scanner userFile) {
         throw new IllegalArgumentException("File could not be opened: " + pathToFile);
     }
 }
+
 private static Matrix fileMatrixGenerator(Scanner fileInput){
     int rows = fileInput.nextInt();
     int cols = fileInput.nextInt();
@@ -121,7 +124,6 @@ private static int chooseOperation(Scanner userChoice){
     System.out.print("Selection: ");
     return userChoice.nextInt();
 }
-
 
 public static void main(String[] args){
 Scanner userInput = new Scanner(System.in);
@@ -171,7 +173,6 @@ boolean selectNewMatrices = false;
             System.out.println("Matrix B: ");
             matrixB.displayMatrices();
             while (isRunning && !selectNewMatrices){
-1
                 int operation = chooseOperation(userInput);
                 try {switch (operation) {
                     case 0:
