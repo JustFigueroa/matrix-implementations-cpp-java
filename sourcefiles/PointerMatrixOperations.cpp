@@ -1,24 +1,22 @@
 #include <iostream>
+#include <iostream>
 #include <fstream>
 #include <sstream>
 #include <string>
 using namespace std;
-//Global Constants
-const int MAX_SIZE = 100;
-//End Global Constants
-
+using namespace std;
 //Structures
-struct matrix {
-    float data[MAX_SIZE][MAX_SIZE];
+struct matrix{
+    float** data = nullptr;
     int rows = 0;
     int cols = 0;
 };
 //End Structures
 
 //Function Protypes
-void matrixAddition(matrix& matrixA, matrix& matrixB, matrix& matrixC);
-void matrixSubtraction(matrix& matrixA, matrix& matrixB, matrix& matrixC);
-void matrixMultiplication(matrix& matrixA, matrix& matrixB, matrix& matrixC);
+matrix matrixAddition(matrix& matrixA, matrix& matrixB);
+matrix matrixSubtraction(matrix& matrixA, matrix& matrixB);
+matrix matrixMultiplication(matrix& matrixA, matrix& matrixB);
 void fileMatrixInitialization(matrix& matrixA, matrix& matrixB);
 void manualMatrixInitialization(matrix& matrixA, matrix& matrixB);
 void displayOperands(matrix& matrixA, matrix& matrixB);
@@ -28,10 +26,13 @@ bool getEntryMethod();
 bool tryNewArray();
 bool tryNewOperation();
 bool sizeCheck(matrix& matrixA, matrix& matrixB);
+//Memory Allocation Functions
+void allocateMemory(matrix& matrixM, int rows, int cols);
+void deallocateMemory(matrix& matrixM);
 //End Function Protoypes
 
-//Main Function
-int main (int argc, char* argv[]){
+
+int main(int argc, char* argv[]) {
 //Declerations
 int operation = 0;
 bool isManualEntry = false;
@@ -58,13 +59,19 @@ fileMatrixInitialization(matrixA, matrixB);
             case 0: 
                 break;
             case 1: 
-                matrixAddition(matrixA, matrixB, matrixC);
+                matrixC = matrixAddition(matrixA, matrixB);
+                displayResults (matrixC);
+                deallocateMemory(matrixC);
                 break;
             case 2:
-                matrixSubtraction(matrixA, matrixB, matrixC);
+                matrixC = matrixSubtraction(matrixA, matrixB);
+                displayResults (matrixC);
+                deallocateMemory(matrixC);
                 break;
             case 3:
-                matrixMultiplication(matrixA, matrixB, matrixC);
+                matrixC = matrixMultiplication(matrixA, matrixB);
+                displayResults (matrixC);
+                deallocateMemory(matrixC);
                 break;
             default:
                 return -1;
@@ -73,59 +80,78 @@ fileMatrixInitialization(matrixA, matrixB);
         }
     newArray = tryNewArray();
     newOperation = true;
+    deallocateMemory(matrixA);
+    deallocateMemory(matrixB);
     }
 return 0;
 }
 
 //Operation Functions as Required by Assignment
-void matrixAddition(matrix& matrixA, matrix& matrixB, matrix& matrixC){
+//Reused From Stack Dynamic But Altered to Manually Allocate and Deallocate Memory / Return a Matrix
+matrix matrixAddition(matrix& matrixA, matrix& matrixB){
     if (matrixA.cols != matrixB.cols || matrixA.rows != matrixB.rows){
-        cout << "Incompatible array sizes" << endl;
+        throw runtime_error("Incompatible array sizes");
     }
     else {
+    matrix matrixC;
     matrixC.rows = matrixA.rows;
     matrixC.cols = matrixA.cols;
-    for (int i = 0; i < matrixA.rows; i++) {
+    allocateMemory(matrixC, matrixC.rows, matrixC.cols);    for (int i = 0; i < matrixA.rows; i++) {
         for (int j = 0; j < matrixA.cols; j++) {
             matrixC.data[i][j] = matrixA.data[i][j] + matrixB.data[i][j];
             }
         }
-    displayResults(matrixC);
+    return matrixC;
     }
+throw runtime_error("Unexpected Error: -1");
 }
-void matrixSubtraction(matrix& matrixA, matrix& matrixB, matrix& matrixC){
+matrix matrixSubtraction(matrix& matrixA, matrix& matrixB){
     if (matrixA.cols != matrixB.cols || matrixA.rows != matrixB.rows){
-        cout << "Incompatible array sizes" << endl;
+        throw runtime_error("Incompatible array sizes");
     }
     else{
+    matrix matrixC;
     matrixC.rows = matrixA.rows;
     matrixC.cols = matrixA.cols;
+    allocateMemory(matrixC, matrixC.rows, matrixC.cols);
     for (int i = 0; i < matrixA.rows; i++) {
         for (int j = 0; j < matrixA.cols; j++) {
             matrixC.data[i][j] = matrixA.data[i][j] - matrixB.data[i][j];
             }
         }
-    displayResults(matrixC);
+    return matrixC;
     }
+throw runtime_error("Unexpected Error: -1");
 }
-void matrixMultiplication(matrix& matrixA, matrix& matrixB, matrix& matrixC){
+matrix matrixMultiplication(matrix& matrixA, matrix& matrixB){
     if (matrixA.cols != matrixB.rows){
         cout << "Incompatible array sizes" << endl;
-
+        throw runtime_error("Incompatible array sizes");
     }
     else if (matrixA.cols == matrixB.rows){
-    matrixC.rows = matrixA.rows;
-    matrixC.cols = matrixB.cols;
+        auto start = chrono::high_resolution_clock::now();
+        matrix matrixC;
+        matrixC.data = nullptr;
+        matrixC.rows = matrixA.rows;
+        matrixC.cols = matrixB.cols;
+        allocateMemory(matrixC, matrixC.rows, matrixC.cols);
     for (int i = 0; i < matrixA.rows; i++) {
         for (int j = 0; j < matrixB.cols; j++) {
             matrixC.data[i][j] = 0;
             for (int k = 0; k < matrixA.cols; k++) {
                 matrixC.data[i][j] += matrixA.data[i][k] * matrixB.data[k][j];
+                }
             }
         }
+            auto end = chrono::high_resolution_clock::now();
+            auto elapsedTime =chrono::duration<double, milli>(end - start).count();   
+            cout << "*******" << endl;
+            cout << elapsedTime;
+            cout << "ms" << endl;
+            cout << "*******";
+    return matrixC;
     }
-    displayResults(matrixC);
-}
+    throw runtime_error("Unexpected Error: -1");
 }
 
 //Helper Functions To Enhance readability of Main
@@ -157,6 +183,7 @@ void fileMatrixInitialization(matrix& matrixA, matrix& matrixB){
     getline(data, line);
     stringstream dimensionsA(line);
     dimensionsA >> matrixA.rows >> matrixA.cols;
+    allocateMemory(matrixA, matrixA.rows, matrixA.cols);
     for (int i = 0; i < matrixA.rows; i++) {
         getline(data, line);
         stringstream rowStream(line);
@@ -168,6 +195,7 @@ void fileMatrixInitialization(matrix& matrixA, matrix& matrixB){
     getline(data, line);
     stringstream dimensionsB(line);
     dimensionsB >> matrixB.rows >> matrixB.cols;
+    allocateMemory(matrixB, matrixB.rows, matrixB.cols);
     for (int i = 0; i < matrixB.rows; i++) {
         getline(data, line);
         stringstream rowStream(line);
@@ -203,7 +231,8 @@ if (!isValidSize){
     cout << "------------------------------------------" << endl;
     }
 }
-
+allocateMemory(matrixA, matrixA.rows, matrixA.cols);
+allocateMemory(matrixB, matrixB.rows, matrixB.cols);
 cout << "Enter values for Matrix A: " << endl;
     for (int i = 0; i < matrixA.rows; i++){
         for (int j = 0; j < matrixA.cols; j++){
@@ -221,6 +250,32 @@ cout << "Enter values for Matrix B: " << endl;
         }
 displayOperands(matrixA, matrixB);
 }
+//Helpers Exclusive To Pointer Matrix Operations
+//Used to Allocate and Deallocate
+void allocateMemory(matrix& matrixM, int rows, int cols){
+    matrixM.rows = rows; 
+    matrixM.cols = cols;
+    matrixM.data = new float*[rows];
+    for (int i = 0; i < rows; i++){
+        matrixM.data[i] = new float[cols];
+    }
+}
+void deallocateMemory(matrix& matrixM){
+    if (matrixM.data == nullptr) {
+        return;
+    }
+
+    for (int i = 0; i < matrixM.rows; i++) {
+        delete[] matrixM.data[i];
+    }
+
+    delete[] matrixM.data;
+
+    matrixM.data = nullptr;
+    matrixM.rows = 0;
+    matrixM.cols = 0;
+}
+//These Helpers Are Reused From Stack Dynamic Program
 void displayOperands(matrix& matrixA, matrix& matrixB){
         cout << "Matrix A:" << endl;
     for (int i = 0; i < matrixA.rows; i++) {
@@ -239,6 +294,9 @@ void displayOperands(matrix& matrixA, matrix& matrixB){
         cout << "------------------------------" << endl;
 }
 void displayResults(matrix& matrixC){
+    if (matrixC.data == nullptr){
+        return;
+    }
     cout << "Matrix C: " << endl;
     for (int i = 0; i < matrixC.rows; i++){
         for (int j = 0; j < matrixC.cols; j++){

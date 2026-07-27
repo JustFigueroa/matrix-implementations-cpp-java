@@ -9,10 +9,10 @@ private int cols;
 
 public Matrix(int rows, int cols){
     if (rows < 1 || cols < 1){
-        throw new IllegalArgumentException("Matrix dimensions should be between 1 and 100");
+        throw new IllegalArgumentException("Matrix dimensions should be between 1 and 10,000");
     }
-    else if (rows > 100 || cols > 100){
-        throw new IllegalArgumentException("Matrix dimensions should be between 1 and 100");
+    else if (rows > 10000 || cols > 10000){
+        throw new IllegalArgumentException("Matrix dimensions should be between 1 and 10,000");
     };
 
 this.rows = rows;
@@ -54,6 +54,7 @@ public Matrix mult(Matrix matrixB){
     if (cols != matrixB.rows ){
         throw new IllegalArgumentException("Incompatable array sizes");
     }
+    long startTime = System.nanoTime();
     Matrix matrixC = new Matrix(rows, cols);
         for (int i = 0; i < rows; i++) {
         for (int j = 0; j < matrixB.cols; j++) {
@@ -63,6 +64,13 @@ public Matrix mult(Matrix matrixB){
                 }
             }
         }
+                     long endTIme = System.nanoTime();
+                     double elapsedNano = (double)(endTIme - startTime);
+                     double elapsedMili = elapsedNano / (double)1000000.0F;
+                     System.out.println("*****");
+                     System.out.print(elapsedMili);
+                     System.out.print("ms");
+                     System.out.println("*****");   
     return matrixC;
 }
 //Mat
@@ -92,7 +100,6 @@ private static Matrix manualMatrixGenerator(Scanner userVal, String matrixName){
 
 private static Matrix[] fileMatrixInitialization(Scanner userFile) {
     System.out.print("Enter path to file: ");
-    userFile.nextLine();
     String pathToFile = userFile.nextLine();
     try (Scanner fileInput = new Scanner(new File(pathToFile))) {
         Matrix matrixA = fileMatrixGenerator(fileInput);
