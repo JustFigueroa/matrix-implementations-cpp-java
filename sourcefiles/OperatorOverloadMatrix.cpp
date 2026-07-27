@@ -118,7 +118,7 @@ public:
         data[row][column] = value;
     }
 
-    // Overloaded addition operator.
+    //overload operators
     matrix operator+(matrix& matrixB){
         if (rows != matrixB.rows || columns != matrixB.columns) {
             throw runtime_error("Matrix Dimensions Invalid");
@@ -134,7 +134,7 @@ public:
     matrix operator-(matrix& matrixB){
         if (rows != matrixB.rows ||
             columns != matrixB.columns) {
-            throw runtime_error("Matrix Dimensions Invalid");
+            throw runtime_error("Matrix dimensions invalid");
         }
         matrix matrixC(rows, columns);
 
@@ -147,7 +147,7 @@ public:
     }
     matrix operator*(matrix& matrixB){
         if (columns != matrixB.rows){
-            throw runtime_error("Matrix Dimensions Invalid");
+            throw runtime_error("matrix dimensions invalid");
         }
         matrix matrixC(rows, matrixB.columns);
         for (int i = 0; i < rows; i++) {
@@ -165,7 +165,7 @@ void fileMatrixInitialization(matrix& matrixA, matrix& matrixB);
 void manualMatrixInitialization(matrix& matrixA, matrix& matrixB);
 
 int main(){ 
-    // Declarations
+    //declarations
     int operation = 0;
     int val = 0;
     bool newOperation = false;
@@ -173,7 +173,7 @@ int main(){
     matrix matrixA;
     matrix matrixB;
     matrix matrixC;
-    // End declarations
+    //end declarations
     try{
         while (newArray){
             cout << "-----------------" << endl;
